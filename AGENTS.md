@@ -1,0 +1,48 @@
+# AGENTS.md
+
+## Project context
+Single-module Android app (`:app`) in Kotlin + Jetpack Compose. It is still the Android Studio
+template (`MainActivity` renders `Greeting("Android")`); the real work is defined in
+`docs/MVVM-Tres en ratlla.md` (Catalan, authoritative). Implement Tic-Tac-Toe with the exact
+required types in package `com.example.tresenratlla`: `CellModel`, `BoardModel`
+(`createInitialBoard()`, `makeMove()`, `checkWinner()`), `GameViewModel` (`onCellClick()`,
+`restartGame()`), `GameScreen`, `BoardGrid`, `CellItemView`.
+
+## Commands
+Run from the repo root. On Windows use `gradlew.bat`; from WSL/Linux use `./gradlew` only after
+fixing the SDK setup described below.
+
+- Build: `./gradlew assembleDebug`
+- Unit tests: `./gradlew testDebugUnitTest`
+- Single unit test: `./gradlew testDebugUnitTest --tests "com.example.tresenratlla.ExampleUnitTest"`
+- Instrumented tests (device/emulator required): `./gradlew connectedDebugAndroidTest`
+- Lint: `./gradlew lintDebug`
+
+## Environment gotchas
+- `local.properties` points `sdk.dir` at a Windows-only path (`C:\Users\fmdev\...`) and is
+  gitignored. There is no `java` on PATH in the WSL shell. CLI builds as configured therefore
+  work from Windows/Android Studio; for WSL, provide a JDK (the daemon criteria targets JDK 25)
+  and point `sdk.dir` at a Linux Android SDK. Do not commit `local.properties`.
+- Not a git repository yet (`.gitignore` exists). The assignment requires a public GitHub repo
+  with frequent commits, e.g. `feat: implementa la comprovació de victòria en el BoardModel`.
+
+## Build configuration quirks
+- Versions are centralized in `gradle/libs.versions.toml`; add dependencies there and reference
+  them through `libs.*` rather than hardcoding versions.
+- The project uses AGP 9.4.1 DSL: `compileSdk { version = release(37) }` (not `compileSdk = 37`),
+  and R8 rules belong in `app/src/main/keepRules/*.keep`, not `proguard-rules.pro`.
+- Configuration cache is enabled (`org.gradle.configuration-cache=true`); avoid build-script side
+  effects.
+- `namespace`/`applicationId` are `com.example.tresenratlla`, and the instrumented test asserts
+  that package name.
+- No DI, navigation, or networking libraries are set up. Keep the Compose/AndroidX stack already
+  declared unless the task requires more.
+
+## Assignment constraints
+- `BoardModel` must stay immutable: return updated instances via `.copy()`; the View must not
+  mutate state directly.
+- Create a `README.md` (none exists) with the three spec sections: MVVM analysis vs
+  `MVVMSimple`/`MVVM-separatModel`, the app's architecture plus a screenshot/GIF, and concepts
+  learned.
+- Add explanatory comments for unfamiliar Android/Compose/StateFlow APIs (e.g.
+  `collectAsState()`, `asStateFlow()`, `.copy()`) as the spec requires.
