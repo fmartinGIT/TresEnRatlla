@@ -105,20 +105,48 @@ locals de la interfície que no formen part del model del joc.
 
 ```text
 app/src/main/java/com/example/tresenratlla/
-├── MainActivity.kt                 # Punt d'entrada; aplica el tema i mostra GameScreen
+├── MainActivity.kt                 # Punt d'entrada; aplica l'idioma i mostra TresEnRatllaApp
 ├── model/
 │   ├── CellModel.kt                # Casella immutable
 │   ├── PlayerSymbol.kt             # X / O
 │   └── BoardModel.kt               # Estat i regles pures del joc
+├── settings/
+│   ├── AppLanguage.kt              # Català / Español / English
+│   └── SettingsRepository.kt       # Persistència amb SharedPreferences
 ├── viewmodel/
 │   └── GameViewModel.kt            # MutableStateFlow + accions de la UI
 └── ui/
-    ├── GameScreen.kt               # Pantalla, estat del joc i reinici
+    ├── TresEnRatllaApp.kt          # Estat del tema/idioma i navegació a configuració
+    ├── GameScreen.kt               # Pantalla, estat del joc, reinici i engranatge
+    ├── settings/
+    │   └── SettingsScreen.kt       # Selectors de tema i idioma
     ├── components/
     │   ├── BoardGrid.kt            # Graella 3x3 amb LazyVerticalGrid
-    │   └── CellItemView.kt         # Casella clicable
-    └── theme/                      # Tema Material 3
+    │   └── CellItemView.kt         # Casella clicable amb el color de X/O
+    └── theme/
+        ├── AppTheme.kt             # Els quatre temes + LocalPlayerColors
+        ├── Color.kt                # Paletes Material 3
+        └── Theme.kt                # TresEnRatllaTheme
 ```
+
+### Temes i idiomes
+
+L'engranatge de la barra superior obre la pantalla de configuració, que ofereix:
+
+- **Quatre temes Material 3**: verd/vermell clar, verd/vermell fosc, blau/taronja clar i
+  blau/taronja fosc. El color de la **X** és el verd o el blau, i el de la **O** el vermell o el
+  taronja. El tema triat s'aplica immediatament i es desa amb `SharedPreferences`.
+- **Tres idiomes**: català (per defecte), español i English. Els textos viuen a
+  `res/values/strings.xml` (català), `values-es` i `values-en`.
+
+El canvi d'idioma utilitza les APIs de **locale per aplicació** d'Android:
+`AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(...))`. Per això
+`MainActivity` hereta d'`AppCompatActivity` i el manifest declara `android:localeConfig` i el servei
+`AppLocalesMetadataHolderService`, que desa el locale també a les versions antigues d'Android.
+Com que canviar el locale pot recrear l'activitat, `TresEnRatllaApp` recupera el tema i l'idioma
+desats perquè la recreació no els perdi.
+
+![Pantalla de configuració amb els quatre temes i els tres idiomes](docs/captura-configuracio.png)
 
 ### Flux d'una jugada
 
@@ -191,7 +219,14 @@ cmd.exe /c "gradlew.bat testDebugUnitTest"
 - **`Surface` amb `onClick`**: afegeix comportament tàctil i estat de polsació a una superfície de
   Material 3.
 - **`stringResource()`**: llegeix textos de `res/values/strings.xml` per mantenir la UI
-  localitzable.
+  localitzable. Amb `values-es` i `values-en`, el mateix codi mostra l'idioma actiu.
+- **`CompositionLocalProvider` / `staticCompositionLocalOf`**: permeten exposar els colors de X i O
+  del tema actiu (`LocalPlayerColors`) a qualsevol composable sense passar-los per paràmetre.
+- **`AppCompatDelegate.setApplicationLocales()`**: canvia l'idioma només per a l'aplicació, sense
+  tocar la configuració del sistema. `LocaleListCompat.forLanguageTags("ca")` construeix la llista
+  de locales.
+- **`SharedPreferences`**: emmagatzematge clau-valor síncron. És suficient per a dos ajustos i
+  permet llegir el tema i l'idioma abans de la primera composició.
 - **`enableEdgeToEdge()`**: permet que l'app dibuixi sota les barres del sistema; el `Scaffold`
   aplica el padding necessari.
 
@@ -203,6 +238,10 @@ Els tests unitaris cobreixen la lògica del model i la integració bàsica amb e
   moviments invàlids, victòria horitzontal/vertical/diagonal, empat i bloqueig després del final.
 - `app/src/test/java/com/example/tresenratlla/viewmodel/GameViewModelTest.kt`: estat inicial,
   actualització en clicar i reinici.
+- `app/src/test/java/com/example/tresenratlla/ui/theme/AppThemeTest.kt`: hi ha dos temes clars i dos
+  de foscos, i cada tema dona colors diferents i visibles a X i O.
+- `app/src/test/java/com/example/tresenratlla/settings/AppLanguageTest.kt`: resolució de `ca`/`es`/
+  `en` i valor per defecte (català) davant de valors desconeguts.
 
 ```bat
 gradlew.bat testDebugUnitTest

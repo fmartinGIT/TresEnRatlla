@@ -4,8 +4,10 @@
 Single-module Android app (`:app`) in Kotlin + Jetpack Compose implementing Tic-Tac-Toe with
 MVVM. `docs/MVVM-Tres en ratlla.md` (Catalan) is the authoritative assignment spec.
 `BoardModel` holds the pure game logic; `GameViewModel` exposes it through `StateFlow`;
-Compose UI lives under `ui/` (`GameScreen`, `BoardGrid`, `CellItemView`). Tests are in
-`app/src/test` and cover the model and ViewModel.
+Compose UI lives under `ui/` (`GameScreen`, `BoardGrid`, `CellItemView`). Settings (four Material 3
+themes and Catalan/Spanish/English) live under `settings/` and `ui/settings/`, persisted with
+`SharedPreferences`. Tests are in `app/src/test` and cover the model, ViewModel, themes and language
+resolution.
 
 ## Commands
 Run from the repo root. The WSL shell has no `java`/`git`, so use the Windows toolchain:
@@ -45,6 +47,9 @@ Run from the repo root. The WSL shell has no `java`/`git`, so use the Windows to
   that package name.
 - No DI, navigation, or networking libraries are set up. Keep the Compose/AndroidX stack already
   declared unless the task requires more.
+- Theme/language selection uses `AppCompatDelegate.setApplicationLocales` (so `MainActivity`
+  extends `AppCompatActivity`); keep the AppCompat locale service and `android:localeConfig` in the
+  manifest. Base resources are Catalan; add strings to `values-es`/`values-en` too.
 
 ## Assignment constraints
 - `BoardModel` must stay immutable: return updated instances via `.copy()`; the View must not
