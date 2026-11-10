@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">TresEnRatlla</string>
+    <string name="game_title">Tres en raya</string>
+    <string name="turn_message">Turno de %1$s</string>
+    <string name="winner_message">¡Ha ganado %1$s!</string>
+    <string name="draw_message">¡Empate!</string>
+    <string name="restart_game">Reiniciar partida</string>
+
+    <string name="settings">Configuración</string>
+    <string name="settings_title">Configuración</string>
+    <string name="settings_theme">Tema</string>
+    <string name="settings_theme_light">Temas claros</string>
+    <string name="settings_theme_dark">Temas oscuros</string>
+    <string name="settings_language">Idioma</string>
+    <string name="back">Volver</string>
+    <string name="player_x">X</string>
+    <string name="player_o">O</string>
+
+    <string name="theme_green_red_light">Verde y rojo (claro)</string>
+    <string name="theme_green_red_dark">Verde y rojo (oscuro)</string>
+    <string name="theme_blue_orange_light">Azul y naranja (claro)</string>
+    <string name="theme_blue_orange_dark">Azul y naranja (oscuro)</string>
+
+    <string name="language_catalan">Català</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_english">English</string>
+</resources>

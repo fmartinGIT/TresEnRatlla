@@ -5,4 +5,23 @@
     <string name="winner_message">Ha guanyat %1$s!</string>
     <string name="draw_message">Empat!</string>
     <string name="restart_game">Reinicia la partida</string>
+
+    <string name="settings">Configuració</string>
+    <string name="settings_title">Configuració</string>
+    <string name="settings_theme">Tema</string>
+    <string name="settings_theme_light">Temes clars</string>
+    <string name="settings_theme_dark">Temes foscos</string>
+    <string name="settings_language">Idioma</string>
+    <string name="back">Torna</string>
+    <string name="player_x">X</string>
+    <string name="player_o">O</string>
+
+    <string name="theme_green_red_light">Verd i vermell (clar)</string>
+    <string name="theme_green_red_dark">Verd i vermell (fosc)</string>
+    <string name="theme_blue_orange_light">Blau i taronja (clar)</string>
+    <string name="theme_blue_orange_dark">Blau i taronja (fosc)</string>
+
+    <string name="language_catalan">Català</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_english">English</string>
 </resources>

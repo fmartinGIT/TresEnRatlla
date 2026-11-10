@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Tic-Tac-Toe</string>
+    <string name="game_title">Tic-tac-toe</string>
+    <string name="turn_message">%1$s\'s turn</string>
+    <string name="winner_message">%1$s wins!</string>
+    <string name="draw_message">Draw!</string>
+    <string name="restart_game">Restart game</string>
+
+    <string name="settings">Settings</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_theme">Theme</string>
+    <string name="settings_theme_light">Light themes</string>
+    <string name="settings_theme_dark">Dark themes</string>
+    <string name="settings_language">Language</string>
+    <string name="back">Back</string>
+    <string name="player_x">X</string>
+    <string name="player_o">O</string>
+
+    <string name="theme_green_red_light">Green and red (light)</string>
+    <string name="theme_green_red_dark">Green and red (dark)</string>
+    <string name="theme_blue_orange_light">Blue and orange (light)</string>
+    <string name="theme_blue_orange_dark">Blue and orange (dark)</string>
+
+    <string name="language_catalan">Catalan</string>
+    <string name="language_spanish">Spanish</string>
+    <string name="language_english">English</string>
+</resources>

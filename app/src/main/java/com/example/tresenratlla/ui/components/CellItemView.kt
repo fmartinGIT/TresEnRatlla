@@ -14,13 +14,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.tresenratlla.model.CellModel
 import com.example.tresenratlla.model.PlayerSymbol
+import com.example.tresenratlla.ui.theme.LocalPlayerColors
 
 /**
  * Visualització d'una casella individual.
  *
  * El `Surface` amb `onClick` ja aporta l'efecte visual de polsació. La casella
  * només és clicable si la partida continua i està buida; així s'evita enviar
- * moviments invàlids al ViewModel.
+ * moviments invàlids al ViewModel. Els colors de X i O venen del tema actiu.
  */
 @Composable
 fun CellItemView(
@@ -29,9 +30,10 @@ fun CellItemView(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val playerColors = LocalPlayerColors.current
     val symbolColor = when (cell.symbol) {
-        PlayerSymbol.X -> MaterialTheme.colorScheme.primary
-        PlayerSymbol.O -> MaterialTheme.colorScheme.tertiary
+        PlayerSymbol.X -> playerColors.x
+        PlayerSymbol.O -> playerColors.o
         null -> Color.Transparent
     }
 

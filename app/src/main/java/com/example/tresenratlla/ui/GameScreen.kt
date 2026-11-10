@@ -6,15 +6,22 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,6 +31,7 @@ import com.example.tresenratlla.R
 import com.example.tresenratlla.model.BoardModel
 import com.example.tresenratlla.model.PlayerSymbol
 import com.example.tresenratlla.ui.components.BoardGrid
+import com.example.tresenratlla.ui.theme.LocalPlayerColors
 import com.example.tresenratlla.ui.theme.TresEnRatllaTheme
 import com.example.tresenratlla.viewmodel.GameViewModel
 
@@ -38,6 +46,7 @@ import com.example.tresenratlla.viewmodel.GameViewModel
 @Composable
 fun GameScreen(
     viewModel: GameViewModel = viewModel(),
+    onOpenSettings: () -> Unit = {},
 ) {
     val board by viewModel.boardState.collectAsState()
 
@@ -45,6 +54,7 @@ fun GameScreen(
         board = board,
         onCellClick = viewModel::onCellClick,
         onRestartGame = viewModel::restartGame,
+        onOpenSettings = onOpenSettings,
     )
 }
 
@@ -54,14 +64,36 @@ fun GameScreen(
  * Separar-lo permet previsualitzar la pantalla amb qualsevol estat i testejar
  * la UI de manera senzilla.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameContent(
     board: BoardModel,
     onCellClick: (Int) -> Unit,
     onRestartGame: () -> Unit,
+    onOpenSettings: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Scaffold(modifier = modifier.fillMaxSize()) { innerPadding ->
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = stringResource(R.string.game_title),
+                        fontWeight = FontWeight.Bold,
+                    )
+                },
+                actions = {
+                    IconButton(onClick = onOpenSettings) {
+                        Icon(
+                            imageVector = Icons.Filled.Settings,
+                            contentDescription = stringResource(R.string.settings),
+                        )
+                    }
+                },
+            )
+        },
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -70,12 +102,6 @@ fun GameContent(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(20.dp),
         ) {
-            Text(
-                text = stringResource(R.string.game_title),
-                style = MaterialTheme.typography.headlineLarge,
-                fontWeight = FontWeight.Bold,
-            )
-
             Text(
                 text = statusMessage(board),
                 style = MaterialTheme.typography.titleLarge,
@@ -112,10 +138,15 @@ private fun statusMessage(board: BoardModel): String {
 }
 
 @Composable
-private fun statusColor(board: BoardModel) = when {
-    board.isGameOver -> MaterialTheme.colorScheme.primary
-    board.currentTurn == PlayerSymbol.X -> MaterialTheme.colorScheme.primary
-    else -> MaterialTheme.colorScheme.tertiary
+private fun statusColor(board: BoardModel): Color {
+    val playerColors = LocalPlayerColors.current
+    return when {
+        board.winner == PlayerSymbol.X -> playerColors.x
+        board.winner == PlayerSymbol.O -> playerColors.o
+        board.isDraw -> MaterialTheme.colorScheme.onSurfaceVariant
+        board.currentTurn == PlayerSymbol.X -> playerColors.x
+        else -> playerColors.o
+    }
 }
 
 @Preview(showBackground = true)
@@ -126,6 +157,7 @@ private fun GameContentPreview() {
             board = BoardModel.createInitialBoard(),
             onCellClick = {},
             onRestartGame = {},
+            onOpenSettings = {},
         )
     }
 }
