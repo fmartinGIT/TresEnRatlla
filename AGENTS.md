@@ -9,22 +9,23 @@ required types in package `com.example.tresenratlla`: `CellModel`, `BoardModel`
 `restartGame()`), `GameScreen`, `BoardGrid`, `CellItemView`.
 
 ## Commands
-Run from the repo root. On Windows use `gradlew.bat`; from WSL/Linux use `./gradlew` only after
-fixing the SDK setup described below.
+Run from the repo root. The WSL shell has no `java`/`git`, so use the Windows toolchain:
+`cmd.exe /c gradlew.bat <task>` and the Windows Git at
+`/mnt/c/Program Files/Git/cmd/git.exe`.
 
-- Build: `./gradlew assembleDebug`
-- Unit tests: `./gradlew testDebugUnitTest`
-- Single unit test: `./gradlew testDebugUnitTest --tests "com.example.tresenratlla.ExampleUnitTest"`
-- Instrumented tests (device/emulator required): `./gradlew connectedDebugAndroidTest`
-- Lint: `./gradlew lintDebug`
+- Build: `cmd.exe /c gradlew.bat assembleDebug`
+- Unit tests: `cmd.exe /c gradlew.bat testDebugUnitTest`
+- Single unit test: `cmd.exe /c gradlew.bat testDebugUnitTest --tests "com.example.tresenratlla.model.BoardModelTest"`
+- Instrumented tests (device/emulator required): `cmd.exe /c gradlew.bat connectedDebugAndroidTest`
+- Lint: `cmd.exe /c gradlew.bat lintDebug`
 
 ## Environment gotchas
 - `local.properties` points `sdk.dir` at a Windows-only path (`C:\Users\fmdev\...`) and is
-  gitignored. There is no `java` on PATH in the WSL shell. CLI builds as configured therefore
-  work from Windows/Android Studio; for WSL, provide a JDK (the daemon criteria targets JDK 25)
-  and point `sdk.dir` at a Linux Android SDK. Do not commit `local.properties`.
-- Not a git repository yet (`.gitignore` exists). The assignment requires a public GitHub repo
-  with frequent commits, e.g. `feat: implementa la comprovació de victòria en el BoardModel`.
+  gitignored. Use Windows/Android Studio for builds; a WSL build would need a Linux Android SDK
+  and a JDK (the daemon criteria targets JDK 25). Do not commit `local.properties`.
+- Git is installed on Windows, not inside WSL. The repository is initialized with remote
+  `origin` = `git@github.com:fmartinGIT/TresEnRatlla.git`, branch `main`. Use clear commits,
+  e.g. `feat: implementa la comprovació de victòria en el BoardModel`.
 
 ## Build configuration quirks
 - Versions are centralized in `gradle/libs.versions.toml`; add dependencies there and reference
