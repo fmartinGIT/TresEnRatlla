@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">TresEnRatlla</string>
+    <string name="game_title">Tres en ratlla</string>
+    <string name="turn_message">Torn de %1$s</string>
+    <string name="winner_message">Ha guanyat %1$s!</string>
+    <string name="draw_message">Empat!</string>
+    <string name="restart_game">Reinicia la partida</string>
 </resources>
